@@ -2,6 +2,7 @@ package com.example.calculator;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,11 +31,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView num_period;
     private TextView num_equals;
     private TextView num_add_subtract;
+    private ImageButton num_backspace;
 
-    private float input, input2 ;
+    private String input, input2 ;
     private Double input_number;
 
-    boolean Addition, Subtract, Multiplication, Division, mRemainder, decimal;
+    boolean Addition, Subtract, Multiplication, Division, mRemainder, decimal, add_sub;
 
 
     @Override
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         num_period = findViewById(R.id.num_period);
         num_input = findViewById(R.id.num_input);
         num_output = findViewById(R.id.num_output);
+        num_backspace = findViewById(R.id.num_backspace);
 
         num_0.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +150,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 num_input.setText(null);
                 decimal = false;
+                add_sub = false;
+                Addition = false;
+                Subtract = false;
+                Multiplication = false;
+                Division = false;
+                mRemainder = false;
+            }
+        });
+
+        num_period.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!decimal) {
+                    num_input.setText(num_input.getText() + ".");
+                    decimal = true;
+                }
             }
         });
 
@@ -154,10 +173,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (num_input != null){
-                    input = Float.parseFloat(num_input.getText() + "");
+                    input = (num_input.getText() + "");
                     Addition = true;
                     decimal = false;
                     num_input.setText(null);
+                    num_output.setText(new Float(input).toString().replaceAll("\\.?0*$", ""));
                 }
             }
         });
@@ -166,10 +186,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (num_input != null){
-                    input = Float.parseFloat(num_input.getText() + "");
+                    input = (num_input.getText() + "");
                     Subtract = true;
                     decimal = false;
                     num_input.setText(null);
+                    num_output.setText(new Float(input).toString().replaceAll("\\.?0*$", ""));
                 }
             }
         });
@@ -178,10 +199,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (num_input != null){
-                    input = Float.parseFloat(num_input.getText() + "");
+                    input = (num_input.getText() + "");
                     Multiplication = true;
                     decimal = false;
                     num_input.setText(null);
+                    num_output.setText(new Float(input).toString().replaceAll("\\.?0*$", ""));
                 }
             }
         });
@@ -190,10 +212,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (num_input != null){
-                    input = Float.parseFloat(num_input.getText() + "");
+                    input = (num_input.getText() + "");
                     Division = true;
                     decimal = false;
                     num_input.setText(null);
+                    num_output.setText(new Float(input).toString().replaceAll("\\.?0*$", ""));
                 }
             }
         });
@@ -202,10 +225,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (num_input != null){
-                    input = Float.parseFloat(num_input.getText() + "");
+                    input = (num_input.getText() + "");
                     mRemainder = true;
                     decimal = false;
                     num_input.setText(null);
+                    num_output.setText(new Float(input).toString().replaceAll("\\.?0*$", ""));
                 }
             }
         });
@@ -214,8 +238,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (num_input != null){
-                    // this line is buggy!!
-                    input = num_input.setText(num_input *= -1).toString();
+                    input = (num_input.getText() + "");
+                    float final_input = Float.parseFloat(input);
+                    num_input.setText(new Float(final_input * -1).toString().replaceAll("\\.?0*$", ""));
+                    decimal = false;
+                    num_output.setText(new Float(final_input * -1).toString().replaceAll("\\.?0*$", ""));
+                }
+            }
+        });
+
+        num_backspace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sample_input = (num_input.getText() + "");
+                input = sample_input.substring(0, sample_input.length() - 1);
+                num_input.setText(input);
+
+                if (input.contains(".")){
+                    decimal = true;
+                }
+                else{
+                    decimal = false;
                 }
             }
         });
@@ -224,55 +267,51 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Addition || Subtract || Multiplication || Division || mRemainder) {
-                    input2 = Float.parseFloat(num_input.getText() + "");
+                    input2 = (num_input.getText() + "");
                 }
 
                 if (Addition) {
 
-                    num_input.setText(input + input2 + "");
-                    num_output.setText(input + input2 + "");
+                    float final_input = Float.parseFloat(input);
+                    float final_input2 = Float.parseFloat(input2);
+                    num_input.setText(new Float(final_input + final_input2 + "").toString().replaceAll("\\.?0*$", ""));
+                    num_output.setText(new Float(final_input + final_input2 + "").toString().replaceAll("\\.?0*$", ""));
                     Addition = false;
                 }
 
                 if (Subtract) {
 
-                    num_input.setText(input - input2 + "");
-                    num_output.setText(input - input2 + "");
+                   float final_input = Float.parseFloat(input);
+                    float final_input2 = Float.parseFloat(input2);
+                    num_input.setText(new Float(final_input - final_input2 + "").toString().replaceAll("\\.?0*$", ""));
+                    num_output.setText(new Float(final_input - final_input2 + "").toString().replaceAll("\\.?0*$", ""));
                     Subtract = false;
                 }
 
                 if (Multiplication) {
 
-                    num_input.setText(input * input2 + "");
-                    num_output.setText(input * input2 + "");
+                    float final_input = Float.parseFloat(input);
+                    float final_input2 = Float.parseFloat(input2);
+                    num_input.setText(new Float(final_input * final_input2 + "").toString().replaceAll("\\.?0*$", ""));
+                    num_output.setText(new Float(final_input * final_input2 + "").toString().replaceAll("\\.?0*$", ""));
                     Multiplication = false;
                 }
 
                 if (Division) {
-
-                    num_input.setText(input / input2 + "");
-                    num_output.setText(input / input2 + "");
+                    float final_input = Float.parseFloat(input);
+                    float final_input2 = Float.parseFloat(input2);
+                    num_input.setText(new Float(final_input / final_input2 + "").toString().replaceAll("\\.?0*$", ""));
+                    num_output.setText(new Float(final_input / final_input2 + "").toString().replaceAll("\\.?0*$", ""));
                     Division = false;
                 }
                 if (mRemainder) {
 
-                    num_input.setText(input % input2 + "");
-                    num_output.setText(input % input2 + "");
+                    float final_input = Float.parseFloat(input);
+                    float final_input2 = Float.parseFloat(input2);
+                    num_input.setText(new Float(final_input % final_input2 + "").toString().replaceAll("\\.?0*$", ""));
+                    num_output.setText(new Float(final_input % final_input2 + "").toString().replaceAll("\\.?0*$", ""));
                     mRemainder = false;
                 }
-            }
-        });
-
-        num_period.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (decimal) {
-                    //do nothing or you can show the error
-                } else {
-                    num_input.setText(num_input.getText() + ".");
-                    decimal = true;
-                }
-
             }
         });
     }

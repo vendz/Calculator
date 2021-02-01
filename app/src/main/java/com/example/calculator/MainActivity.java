@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton num_backspace;
 
     private String input, input2 ;
-    private Double input_number;
 
     boolean Addition, Subtract, Multiplication, Division, mRemainder, decimal, add_sub;
 
@@ -251,10 +250,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String sample_input = (num_input.getText() + "");
-                input = sample_input.substring(0, sample_input.length() - 1);
-                num_input.setText(input);
+                String mInput = sample_input.substring(0, sample_input.length() - 1);
+                num_input.setText(mInput);
 
-                if (input.contains(".")){
+                if (mInput.contains(".")){
                     decimal = true;
                 }
                 else{
@@ -281,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (Subtract) {
 
-                   float final_input = Float.parseFloat(input);
+                    float final_input = Float.parseFloat(input);
                     float final_input2 = Float.parseFloat(input2);
                     num_input.setText(new Float(final_input - final_input2 + "").toString().replaceAll("\\.?0*$", ""));
                     num_output.setText(new Float(final_input - final_input2 + "").toString().replaceAll("\\.?0*$", ""));
